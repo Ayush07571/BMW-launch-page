@@ -18,32 +18,6 @@ const HeroCanvas = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const prevFrameRef = useRef<number>(-1);
 
-  // Preload logic
-  useEffect(() => {
-    let loadedCount = 0;
-    const images: HTMLImageElement[] = [];
-
-    const onLoad = () => {
-      loadedCount++;
-      const progress = Math.round((loadedCount / TOTAL_FRAMES) * 100);
-      setLoadProgress(progress);
-      if (loadedCount === TOTAL_FRAMES) {
-        setIsLoaded(true);
-        // Initial draw
-        drawFrame(TOTAL_FRAMES);
-      }
-    };
-
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
-      const img = new (window.Image as any)();
-      img.src = FRAME_PATH(i);
-      img.onload = onLoad;
-      img.onerror = onLoad;
-      images.push(img);
-    }
-    imagesRef.current = images;
-  }, []);
-
   const drawFrame = useCallback((index: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -90,6 +64,31 @@ const HeroCanvas = () => {
     ctx.drawImage(img, finalX, finalY, finalWidth, finalHeight);
     prevFrameRef.current = index;
   }, []);
+
+  // Preload logic
+  useEffect(() => {
+    let loadedCount = 0;
+    const images: HTMLImageElement[] = [];
+
+    const onLoad = () => {
+      loadedCount++;
+      const progress = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+      setLoadProgress(progress);
+      if (loadedCount === TOTAL_FRAMES) {
+        setIsLoaded(true);
+        drawFrame(TOTAL_FRAMES);
+      }
+    };
+
+    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+      const img = new (window.Image as any)();
+      img.src = FRAME_PATH(i);
+      img.onload = onLoad;
+      img.onerror = onLoad;
+      images.push(img);
+    }
+    imagesRef.current = images;
+  }, [drawFrame]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -162,7 +161,6 @@ const HeroCanvas = () => {
 
         <div className="absolute inset-0 bg-gradient-to-b from-bg/40 via-transparent to-bg/40 pointer-events-none z-[10]" />
 
-        {/* Preloader */}
         {!isLoaded && (
           <div className="absolute inset-0 z-[60] bg-bg flex flex-col items-center justify-center transition-opacity duration-1000">
             <div className="flex flex-col items-center gap-6">
@@ -177,7 +175,6 @@ const HeroCanvas = () => {
           </div>
         )}
 
-        {/* Overlay Text System */}
         <div className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center text-center px-6 z-[100]">
           <div 
             style={{ 

@@ -168,7 +168,7 @@ const EditorialQuote = () => (
     <div className="w-20 h-[1px] bg-accent mb-12" />
     <FadeIn>
       <blockquote className="font-display italic text-3xl md:text-5xl text-fg max-w-4xl leading-tight">
-        "It is not enough to go fast. You must feel it in the spine."
+        &quot;It is not enough to go fast. You must feel it in the spine.&quot;
       </blockquote>
       <cite className="block mt-12 font-body font-light text-[11px] tracking-[0.5em] uppercase text-subtle not-italic">
         — BMW M GmbH, Munich
