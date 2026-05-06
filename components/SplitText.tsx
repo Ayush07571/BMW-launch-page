@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 
 interface SplitTextProps {
   text: string;
@@ -15,7 +15,7 @@ const SplitText: React.FC<SplitTextProps> = ({ text, className, delay = 0 }) => 
   
   const words = text.split(' ');
 
-  const containerVars = {
+  const containerVars: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -26,7 +26,7 @@ const SplitText: React.FC<SplitTextProps> = ({ text, className, delay = 0 }) => 
     },
   };
 
-  const itemVars = {
+  const itemVars: Variants = {
     hidden: { y: "100%" },
     visible: {
       y: 0,
